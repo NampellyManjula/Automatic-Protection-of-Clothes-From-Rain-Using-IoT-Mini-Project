@@ -1,0 +1,101 @@
+const int pinLDR = A0;
+const int pinRS = A1;
+int LEDa = 7;                    
+int LEDb = 6;
+int LEDc = 5;
+int LEDd = 4;
+int x=0;
+int C1=8;                         
+int C2=9;
+int C3=10;
+int C4=11;
+
+int step = 25;                    
+int delaytime = 2;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(pinLDR,INPUT);          
+  pinMode(pinRS,INPUT);         
+  pinMode(LEDa,OUTPUT);          
+  pinMode(LEDb,OUTPUT);       
+  pinMode(LEDc,OUTPUT);          
+  pinMode(LEDd,OUTPUT);           
+  pinMode(C1,OUTPUT);
+  pinMode(C2,OUTPUT);
+  pinMode(C3,OUTPUT);
+  pinMode(C4,OUTPUT);
+}
+
+float total;
+int dataLDR=0;                    
+int dataRS=0;                    
+
+void loop (){
+  dataLDR = analogRead(pinLDR);              
+  if(dataLDR>400) {digitalWrite(LEDa,HIGH);}  
+>400 (Gelap)
+  else    {digitalWrite(LEDa,LOW);}   
+ Serial.print("Data LDR = ");                
+ Serial.println(dataLDR);                   
+  if(dataLDR<400) {digitalWrite(LEDb,HIGH);}  
+  else  {digitalWrite(LEDb,LOW);}     
+ dataRS= analogRead(pinRS);                   
+  if(dataRS<900) {digitalWrite(LEDc,HIGH);}   
+  else    {digitalWrite(LEDc,LOW);}  
+ Serial.print("Data RS = ");                 
+ Serial.println(dataRS);                   
+  if(dataRS>900) {digitalWrite(LEDd,HIGH);}   
+  else      {digitalWrite(LEDd,LOW);}  
+total = (dataRS - (dataLDR+600));
+ Serial.print("total ");
+ Serial.println(total);
+  if (total<-10)
+  { if (x==1){
+ Serial.print("jemuran keluar");
+ for (int i=0; i<2000; i++)
+ {mundur(); } x=0;}
+}
+else if (total>-10)
+{ if(x==0) {
+ Serial.println("jemuran masuk");
+ for (int i=0; i<2000; i++)
+ { maju(); } x=1;} 
+}
+
+delay(1000);}
+
+void mundur(){
+  step4();
+  delay(delaytime);
+  step3();
+  delay(delaytime);
+  step2();
+  delay(delaytime);
+  step1();
+  delay(delaytime);
+}
+void maju(){
+  step1();
+  delay(delaytime);
+  step2();
+  delay(delaytime);
+  step3();
+  delay(delaytime);
+  step4();
+  delay(delaytime);
+}
+void step1(){
+  digitalWrite(C1,LOW);
+  digitalWrite(C2,LOW);
+  digitalWrite(C3,HIGH);
+  digitalWrite(C4,HIGH);}
+void step2(){
+  digitalWrite(C1,HIGH);
+  digitalWrite(C2,LOW);
+  digitalWrite(C3,LOW);
+  digitalWrite(C4,HIGH);}
+void step3(){
+  digitalWrite(C1,HIGH);
+  digitalWrite(C2,HIGH);
+  digitalWrite(C3,LOW);
